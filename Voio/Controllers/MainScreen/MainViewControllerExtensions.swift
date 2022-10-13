@@ -174,7 +174,7 @@ extension MainViewController: UIPageViewControllerDelegate, UIPageViewController
 
         let views: [String: Any] = ["pageView": pageViewController.view as Any]
         header.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[pageView]-20-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: views))
-        header.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[pageView]-0-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: views))
+        header.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[pageView]-0-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: views))
         
         guard let startingViewController = detailViewControllerAt(index: currentViewControllerIndex) else { return }
         pageViewController.setViewControllers([startingViewController], direction: .forward, animated: true)

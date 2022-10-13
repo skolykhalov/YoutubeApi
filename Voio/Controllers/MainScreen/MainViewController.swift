@@ -7,6 +7,7 @@
 
 import UIKit
 import youtube_ios_player_helper
+import MediaPlayer
 
 protocol VideoPlayer {
     func getVideoId(id: String)
@@ -29,7 +30,8 @@ class MainViewController: UIViewController, YTPlayerViewDelegate {
     @IBOutlet weak var viewsCountLabel: UILabel!
     @IBOutlet weak var currentTimeLabel: UILabel!
     @IBOutlet weak var durationLabel: UILabel!
-    @IBOutlet weak var volumeSlider: UISlider!
+    @IBOutlet weak var playerControlStackView: UIStackView!
+    @IBOutlet weak var volumeView: UIView!
     
     var currentViewControllerIndex = 0
     var videoIndex = 0
@@ -40,7 +42,6 @@ class MainViewController: UIViewController, YTPlayerViewDelegate {
     var mainViewControllerViewModel = MainViewControllerViewModel()
     var playListId = ""
     var playlistVideoArray: [VideoListItems] = []
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,7 +55,7 @@ class MainViewController: UIViewController, YTPlayerViewDelegate {
         mainViewControllerViewModel.getPlaylistData(playlistId1: Constants.firstPlaylistId, playlistId2: Constants.secondPlaylistId) {
             self.tableView.reloadData()
         }
-        
+        customSlider()
     }
     
     func configureView() {
@@ -65,12 +66,34 @@ class MainViewController: UIViewController, YTPlayerViewDelegate {
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = view.bounds
         gradientLayer.colors = [UIColor.systemPink.cgColor, UIColor.purple.cgColor, UIColor.blue.cgColor]
-        
         popUpView.layer.insertSublayer(gradientLayer, at: 0)
+        
         playerSlider.setThumbImage(UIImage(named: "ThumbIcon"), for: .normal)
+        
         tableView.register(CollectionTableViewCell.nib(), forCellReuseIdentifier: CollectionTableViewCell.identifier)
     }
     
+    func customSlider() {
+        
+        let myVolumeView = MPVolumeView(frame: CGRect(x: 0, y: 0, width: volumeView.frame.width * 0.9, height: 30))
+        
+        myVolumeView.showsRouteButton = false
+        
+        volumeView.addSubview(myVolumeView)
+        
+            let temp = myVolumeView.subviews
+            for current in temp {
+                if current.isKind(of: UISlider.self) {
+                    let tempSlider = current as! UISlider
+                    tempSlider.minimumTrackTintColor = .white
+                    tempSlider.maximumTrackTintColor = .lightGray
+                    tempSlider.minimumValueImage = UIImage(systemName: "speaker.wave.1.fill")
+                    tempSlider.tintColor = .white
+                    tempSlider.maximumValueImage = UIImage(systemName: "speaker.wave.3.fill")
+                    
+                }
+            }
+        }
     
     //MARK: - VideoPlayer Methods
     
@@ -166,11 +189,6 @@ class MainViewController: UIViewController, YTPlayerViewDelegate {
             self.videoPlayerView.seek(toSeconds: sender.value * Float(duration), allowSeekAhead: true)
         }
     }
-    
-    @IBAction func volumeSliderPushed(_ sender: UISlider) {
-        
-    }
-    
 }
 
 
