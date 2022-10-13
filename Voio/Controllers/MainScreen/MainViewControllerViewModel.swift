@@ -10,35 +10,30 @@ import Foundation
 class MainViewControllerViewModel {
     
     var collectionData: [[VideoListItems]] = []
-    var firstPlaylistArray: [VideoListItems] = []
-    var secondPlaylistArray: [VideoListItems] = []
     var videoData: [VideoItems] = []
     
     //MARK: - Get Playlist Data
     
-    func getFirstPlaylistData(completion: @escaping(()->())) {
+    func getPlaylistData(playlistId1: String, playlistId2: String, completion: @escaping(()->())) {
         
-        let playlistUrl = Constants.youtubeUrl + "playlistItems?part=id,snippet,contentDetails&key=\(Constants.apiKey)&playlistId=\(Constants.firstPlaylistId)&maxResults=10"
+        let playlistUrl1 = Constants.youtubeUrl + "playlistItems?part=id,snippet,contentDetails&key=\(Constants.apiKey)&playlistId=\(playlistId1)&maxResults=10"
         
-        NetworkManager().parceYoutubeData(url: playlistUrl) { (responceData: VideoListModel) in
-            
-            self.firstPlaylistArray = responceData.items ?? []
-            self.collectionData.append(self.firstPlaylistArray)
+        let playlistUrl2 = Constants.youtubeUrl + "playlistItems?part=id,snippet,contentDetails&key=\(Constants.apiKey)&playlistId=\(playlistId2)&maxResults=10"
+        
+        NetworkManager().parceYoutubeData(url: playlistUrl1) { (responceData: VideoListModel) in
+
+            self.collectionData.append(responceData.items ?? [])
             completion()
         }
+        
+        NetworkManager().parceYoutubeData(url: playlistUrl2) { (responceData: VideoListModel) in
+
+            self.collectionData.append(responceData.items ?? [])
+            completion()
+        }
+        
     }
     
-    func getSecondPlaylistData(completion: @escaping(()->())) {
-        
-        let playlistUrl = Constants.youtubeUrl + "playlistItems?part=id,snippet,contentDetails&key=\(Constants.apiKey)&playlistId=\(Constants.secondPlaylistId)&maxResults=10"
-        
-        NetworkManager().parceYoutubeData(url: playlistUrl) { (responceData: VideoListModel) in
-            
-            self.secondPlaylistArray = responceData.items ?? []
-            self.collectionData.append(self.secondPlaylistArray)
-            completion()
-        }
-    }
     
     //MARK: - Get VideoData
     

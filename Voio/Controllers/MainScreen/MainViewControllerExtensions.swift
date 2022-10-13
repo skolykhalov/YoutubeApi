@@ -66,11 +66,13 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate, VideoP
     
     func getVideoId(id: String) {
         videoPlayerView.load(withVideoId: id)
+        videoIsSelected = true
     }
     
     func getPlayList(id: String, playlist: [VideoListItems]) {
         playListId = id
         playlistVideoArray = playlist
+        videoIsSelected = false
         videoPlayerView.load(withPlaylistId: id)
     }
     

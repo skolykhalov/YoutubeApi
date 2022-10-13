@@ -36,9 +36,11 @@ class MainViewController: UIViewController, YTPlayerViewDelegate {
     var timer: Timer?
     var isPlayerViewShown = false
     private var isPlaying = false
+    var videoIsSelected = false
     var mainViewControllerViewModel = MainViewControllerViewModel()
     var playListId = ""
     var playlistVideoArray: [VideoListItems] = []
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,11 +51,7 @@ class MainViewController: UIViewController, YTPlayerViewDelegate {
         
         configurePageViewController()
         
-        mainViewControllerViewModel.getFirstPlaylistData {
-            self.tableView.reloadData()
-        }
-        
-        mainViewControllerViewModel.getSecondPlaylistData {
+        mainViewControllerViewModel.getPlaylistData(playlistId1: Constants.firstPlaylistId, playlistId2: Constants.secondPlaylistId) {
             self.tableView.reloadData()
         }
         
@@ -100,8 +98,6 @@ class MainViewController: UIViewController, YTPlayerViewDelegate {
         self.videoPlayerView.currentTime { currentTime, error in
             currentVideoTime = currentTime
             self.playerSlider.value = currentVideoTime / Float(durationVideoTime)
-            print("Current\(self.playerSlider.value * Float(durationVideoTime))")
-            print("CurrentVideoTime\(currentTime)")
         }
     }
     
@@ -122,9 +118,13 @@ class MainViewController: UIViewController, YTPlayerViewDelegate {
     
     @IBAction func nextVideoButtonPressed(_ sender: UIButton) {
         
-        videoIndex += 1
-        setTheVideoLabels()
-        videoPlayerView.nextVideo()
+        if videoIsSelected {
+            videoIndex = 0
+        } else {
+            videoIndex += 1
+            setTheVideoLabels()
+            videoPlayerView.nextVideo()
+        }
         
     }
     
@@ -134,11 +134,10 @@ class MainViewController: UIViewController, YTPlayerViewDelegate {
             videoIndex = 0
         } else {
             videoIndex -= 1
+            setTheVideoLabels()
+            videoPlayerView.previousVideo()
         }
       
-        setTheVideoLabels()
-        videoPlayerView.previousVideo()
-        
     }
     
     private func setTheVideoLabels() {
