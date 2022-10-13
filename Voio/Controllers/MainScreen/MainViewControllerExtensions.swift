@@ -83,6 +83,8 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate, VideoP
     
     func openHidePlayerView() {
         
+        let height = UIScreen.main.bounds.height
+        
         if isPlayerViewShown {
             
             UIView.animate(withDuration: 0.3) {
@@ -96,7 +98,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate, VideoP
         } else {
             
             UIView.animate(withDuration: 0.1) {
-                self.popUpViewHeightConstraint.constant = 800
+                self.popUpViewHeightConstraint.constant = height * 0.85
                 self.view.layoutIfNeeded()
             } completion: { status in
                 self.isPlayerViewShown = true
@@ -104,7 +106,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate, VideoP
             }
             
             UIView.animate(withDuration: 0.1) {
-                self.popUpViewHeightConstraint.constant = 750
+                self.popUpViewHeightConstraint.constant = height * 0.8
                 self.view.layoutIfNeeded()
             } completion: { status in
             }
