@@ -94,7 +94,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate, VideoP
         } else {
             
             UIView.animate(withDuration: 0.1) {
-                self.popUpViewHeightConstraint.constant = 780
+                self.popUpViewHeightConstraint.constant = 800
                 self.view.layoutIfNeeded()
             } completion: { status in
                 self.isPlayerViewShown = true
@@ -102,7 +102,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate, VideoP
             }
             
             UIView.animate(withDuration: 0.1) {
-                self.popUpViewHeightConstraint.constant = 700
+                self.popUpViewHeightConstraint.constant = 750
                 self.view.layoutIfNeeded()
             } completion: { status in
             }
